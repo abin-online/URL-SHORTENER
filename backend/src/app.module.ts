@@ -6,7 +6,7 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb+srv://abinbabuonline:9keKKq4zY9787Psv@cluster0.2pfbh.mongodb.net/urlShortener'),
+    MongooseModule.forRoot(process.env.MONGODB_URL),
     UrlsModule,
     AuthModule,
   ],
