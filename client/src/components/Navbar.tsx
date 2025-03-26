@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { LinkIcon, LogOut, History, Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import Swal from 'sweetalert2';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
@@ -17,9 +18,21 @@ const Navbar: React.FC = () => {
   }, [accessToken, userId]);
 
   const handleLogout = () => {
-    Cookies.remove('userId');
-    Cookies.remove('accessToken');
-    navigate('/login');
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You will be logged out!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, logout!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Cookies.remove('userId');
+        Cookies.remove('accessToken');
+        navigate('/login');
+      }
+    });
   };
 
   return (

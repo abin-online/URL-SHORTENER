@@ -53,7 +53,7 @@ export class UrlsService {
     return url.originalUrl;
   }
 
-  async getUrlHistory(userId, page = 1, limit = 10) {
+  async getUrlHistory(userId, page = 1, limit = 5) {
     try {
       const skip = (page - 1) * limit;
       const total = await this.urlModel.countDocuments();
