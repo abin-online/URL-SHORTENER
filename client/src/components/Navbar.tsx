@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LinkIcon, LogOut, History, Menu, X, User, ChevronDown } from 'lucide-react';
+import { LinkIcon, LogOut, History, X, User, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import Swal from 'sweetalert2';
