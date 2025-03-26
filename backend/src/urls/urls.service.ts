@@ -11,7 +11,7 @@ dotenv.config();
 export class UrlsService {
   constructor(@InjectModel(Url.name) private urlModel: Model<UrlDocument>) {}
 
-  async shortenUrl(originalUrl: string): Promise<Url> {
+  async shortenUrl(originalUrl: string, userId: string): Promise<Url> {
     try {
       const apiKey = process.env.API_KEY;
       const tinyURL = process.env.TINY_URL;
@@ -35,7 +35,7 @@ export class UrlsService {
       const shortUrl = response.data.data.tiny_url;
       console.log(shortUrl)
       // Save the original and short URL in the database
-      const newUrl = new this.urlModel({ originalUrl, shortUrl });
+      const newUrl = new this.urlModel({ originalUrl, shortUrl, userId });
       return newUrl.save();
     } catch (error) {
       throw new HttpException(
@@ -51,5 +51,32 @@ export class UrlsService {
       throw new HttpException('Short URL not found', HttpStatus.NOT_FOUND);
     }
     return url.originalUrl;
+  }
+
+  async getUrlHistory(userId, page = 1, limit = 10) {
+    try {
+      const skip = (page - 1) * limit;
+      const total = await this.urlModel.countDocuments();
+      const items = await this.urlModel
+        .find({userId})
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .exec();
+
+      return {
+        items,
+        total,
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
+        hasNextPage: page * limit < total,
+        hasPrevPage: page > 1,
+      };
+    } catch (error) {
+      throw new HttpException(
+        'Failed to fetch URL history',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

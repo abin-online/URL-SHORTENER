@@ -4,12 +4,14 @@ import { Copy, LinkIcon, Loader2, Check } from 'lucide-react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './Navbar';
+import Cookies from 'js-cookie';
 
 const UrlShortener: React.FC = () => {
   const [url, setUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const userId = Cookies.get('userId');
 
   const isValidUrl = (input: string) => {
     const urlPattern = new RegExp(
@@ -26,6 +28,7 @@ const UrlShortener: React.FC = () => {
 
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log('userId', userId)
     e.preventDefault();
     if (!isValidUrl(url)) {
       toast.error('Please enter a valid URL!', {
@@ -43,6 +46,7 @@ const UrlShortener: React.FC = () => {
     try {
       const response = await axios.post(import.meta.env.VITE_API_URL_SHORT, {
         originalUrl: url,
+        userId
       });
       setShortUrl(response.data.shortUrl);
       toast.success('URL shortened successfully!', {

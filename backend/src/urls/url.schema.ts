@@ -11,6 +11,9 @@ export class Url {
   @Prop({ required: true, unique: true })
   shortUrl: string;
 
+  @Prop({ required: true })
+  userId: string;
+  
   @Prop({ default: Date.now })
   createdAt: Date;
 }
