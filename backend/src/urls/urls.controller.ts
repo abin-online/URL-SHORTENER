@@ -22,9 +22,9 @@ export class UrlsController {
   
 
   @Get('history/:userId')
-  async getHistory(@Param('userId') userId: string, @Query('page') page = '1', @Query('limit') limit = '10') {
+  async getHistory(@Param('userId') userId: string, @Query('page') page = '1', @Query('limit') limit = '5') {
     const pageNumber = parseInt(page, 10) || 1;
-    const limitNumber = parseInt(limit, 10) || 10;
+    const limitNumber = parseInt(limit, 10) || 5;
     return this.urlsService.getUrlHistory(userId, pageNumber, limitNumber);
   }
 
