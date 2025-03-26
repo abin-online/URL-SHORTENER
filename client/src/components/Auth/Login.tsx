@@ -66,6 +66,7 @@ const Login = () => {
     console.log(response.data)
       Cookies.set('accessToken', response.data.access_token);
       Cookies.set('userId', response.data.userId);
+      Cookies.set('user', response.data.username);
       navigate('/');
       toast.success('Login successful!');
     } catch (error: any) { // Cast 'error' to 'any'
